@@ -1,4 +1,4 @@
-# StepTestFairyDeploy
+# StepTestFairyDeployAndroid
 
 
 

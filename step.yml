@@ -1,4 +1,4 @@
-title: "TestFairy Deploy"
+title: "TestFairy Deploy Android"
 summary: |-
   Deploy your awesome App to TestFairy, set Tester Groups to be notified,
   enable email notification for the build, enable in-app notification of new
@@ -13,7 +13,7 @@ support_url: https://github.com/bitrise-io/steps-testfairy-deploy/issues
 host_os_tags:
   - "osx-10.10"
 project_type_tags:
-  - ios
+  - android
 type_tags:
   - "testfairy"
   - "deploy"
@@ -33,22 +33,13 @@ inputs:
       is_required: true
       is_expand: false
       is_dont_change_value: false
-  - ipa_path: "$BITRISE_IPA_PATH"
+  - apk_path: "$BITRISE_APK_PATH"
     opts:
-      title: "IPA path"
+      title: "APK path"
       summary: ""
       description: |-
-        Path for the IPA to upload to TestFairy.
+        Path for the APK to upload to TestFairy.
       is_required: true
-      is_expand: true
-      is_dont_change_value: false
-  - dsym_path: "$BITRISE_DSYM_PATH"
-    opts:
-      title: "dSYM path"
-      summary: ""
-      description: |-
-        Path for the dSYM to upload to TestFairy.
-      is_required: false
       is_expand: true
       is_dont_change_value: false
   - tester_groups: ""
@@ -101,6 +92,16 @@ inputs:
       is_required: false
       is_expand: false
       is_dont_change_value: false
+  - icon_watermark: "off"
+    opts:
+      title: "Icon Watermark"
+      summary: ""
+      description: |-
+        Sets Icon Watermark.
+      value_options: ["on", "off"]
+      is_required: false
+      is_expand: false
+      is_dont_change_value: false
   - comment: ""
     opts:
       title: "Comments"
@@ -111,7 +112,7 @@ inputs:
       is_expand: false
       is_dont_change_value: false
 outputs: 
-  - TESTFAIRY_PUBLIC_INSTALL_PAGE_URL:
+  - TESTFAIRY_PUBLIC_INSTALL_PAGE_URL_ANDROID:
     opts:
       title: Public Install Page URL
       description: |-
