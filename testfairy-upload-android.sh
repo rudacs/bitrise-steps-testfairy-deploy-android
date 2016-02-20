@@ -62,21 +62,25 @@ if [ ! -f "${APK_FILENAME}" ]; then
 fi
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=$( "${CURL}" -s ${SERVER_ENDPOINT}/api/upload -F api_key=${api_key} -F apk_file="@${APK_FILENAME}" -F icon-watermark="${ICON_WATERMARK}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( "${CURL}" -s ${SERVER_ENDPOINT}/api/upload -F api_key=${api_key} -F apk_file="@${APK_FILENAME}" -F icon-watermark="${ICON_WATERMARK}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
 
-URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
-if [ -z "${URL}" ]; then
-	echo "FAILED!"
-	echo 
-	echo "Upload failed, please check your settings"
+MESSAGE=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"message"\s*:\s*"\([^"]*\)".*/\1/p' )
+URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
+
+if [ ! -z "$MESSAGE" ]; then
+	write_section_to_formatted_output "## Deploy Failed"
+	echo_string_to_formatted_output "Failed to upload the build due to the following error:"
+	echo_string_to_formatted_output "$MESSAGE"
+	exit 1
+elif [ -z "$URL" ]; then
+	write_section_to_formatted_output "## Deploy Failed"
+	echo_string_to_formatted_output "Build uploaded, but no reply from server. Please contact support@testfairy.com"
 	exit 1
 fi
 
-URL="${URL}?api_key=${api_key}"
+write_section_to_formatted_output "## Deploy Success"
+echo_string_to_formatted_output "* **Build URL**: [${URL}](${URL})"
 
 envman add --key TESTFAIRY_PUBLIC_INSTALL_PAGE_URL_ANDROID --value "${URL}"
 
-echo "OK!"
-echo
-echo "Build was successfully uploaded to TestFairy and is available at:"
-echo ${URL}
+exit 0
