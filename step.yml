@@ -7,9 +7,9 @@ summary: |-
 description: |-
   To use this step you have to register
   an account on [TestFairy.com](http://testfairy.com/).
-website: https://github.com/bitrise-io/steps-testfairy-deploy
-source_code_url: https://github.com/bitrise-io/steps-testfairy-deploy
-support_url: https://github.com/bitrise-io/steps-testfairy-deploy/issues
+website: https://github.com/rudacs/bitrise-steps-testfairy-deploy-android
+source_code_url: https://github.com/rudacs/bitrise-steps-testfairy-deploy-android
+support_url: https://github.com/rudacs/bitrise-steps-testfairy-deploy-android/issues
 host_os_tags:
   - "osx-10.10"
 project_type_tags:
@@ -20,7 +20,7 @@ type_tags:
 is_requires_admin_user: false
 is_always_run: false
 is_skippable: false
-dependencies: []
+deps: []
 run_if: ""
 inputs:
   - api_key: ""
