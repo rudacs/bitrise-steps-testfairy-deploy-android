@@ -5,8 +5,7 @@ app:
   envs:
   # define these in your .bitrise.secrets.yml
   - api_key:
-  - BITRISE_IPA_PATH:
-  - BITRISE_DSYM_PATH:
+  - BITRISE_APK_PATH:
 
 workflows:
   test:
@@ -23,8 +22,8 @@ workflows:
         inputs:
         - content: |-
             #!/bin/bash
-            if [[ "$TESTFAIRY_PUBLIC_INSTALL_PAGE_URL" == "" ]] ; then
-              echo "No TESTFAIRY_PUBLIC_INSTALL_PAGE_URL env available!!"
+            if [[ "$TESTFAIRY_PUBLIC_INSTALL_PAGE_URL_ANDROID" == "" ]] ; then
+              echo "No TESTFAIRY_PUBLIC_INSTALL_PAGE_URL_ANDROID env available!!"
               exit 1
             fi
-            echo "TESTFAIRY_PUBLIC_INSTALL_PAGE_URL: ${TESTFAIRY_PUBLIC_INSTALL_PAGE_URL}"
+            echo "TESTFAIRY_PUBLIC_INSTALL_PAGE_URL_ANDROID: ${TESTFAIRY_PUBLIC_INSTALL_PAGE_URL_ANDROID}"
