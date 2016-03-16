@@ -1,9 +1,5 @@
 #!/bin/sh
 
-THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# load bash utils
-source "${THIS_SCRIPT_DIR}/bash_utils/formatted_output.sh"
-
 UPLOADER_VERSION=1.09
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
@@ -16,10 +12,10 @@ NOTIFY="$notify"
 # If AUTO_UPDATE is "on" all users will be prompt to update to this build next time they run the app
 AUTO_UPDATE="$auto_update"
 
-# The maximum recording duration for every test. 
+# The maximum recording duration for every test.
 MAX_DURATION="$max_test_duration"
 
-# Is video recording enabled for this build 
+# Is video recording enabled for this build
 VIDEO="$video_recording"
 
 # Add a TestFairy watermark to the application icon?
@@ -67,19 +63,23 @@ JSON=$( "${CURL}" -s ${SERVER_ENDPOINT}/api/upload -F api_key=${api_key} -F apk_
 MESSAGE=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"message"\s*:\s*"\([^"]*\)".*/\1/p' )
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 
+echo ""
 if [ ! -z "$MESSAGE" ]; then
-	write_section_to_formatted_output "## Deploy Failed"
-	echo_string_to_formatted_output "Failed to upload the build due to the following error:"
-	echo_string_to_formatted_output "$MESSAGE"
+	echo ""
+	printf "\e[31mFailed to deploy to TestFairy\e[0m\n"
+	echo "${MESSAGE}"
 	exit 1
 elif [ -z "$URL" ]; then
-	write_section_to_formatted_output "## Deploy Failed"
-	echo_string_to_formatted_output "Build uploaded, but no reply from server. Please contact support@testfairy.com"
+	echo ""
+	printf "\e[31mFailure during deployment to TestFairy\e[0m\n"
+	echo "Build uploaded, but no reply from server. Please contact support@testfairy.com"
 	exit 1
 fi
 
-write_section_to_formatted_output "## Deploy Success"
-echo_string_to_formatted_output "* **Build URL**: [${URL}](${URL})"
+echo ""
+printf "\e[32mSuccessfuly uploaded to TestFairy\e[0m\n"
+echo "Build is available in the following URL:"
+echo "${URL}"
 
 envman add --key TESTFAIRY_PUBLIC_INSTALL_PAGE_URL_ANDROID --value "${URL}"
 
