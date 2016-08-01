@@ -22,9 +22,6 @@ MAX_DURATION="$max_test_duration"
 # Is video recording enabled for this build 
 VIDEO="$video_recording"
 
-# Add a TestFairy watermark to the application icon?
-ICON_WATERMARK="$icon_watermark"
-
 # Comment text will be included in the email sent to testers
 COMMENT="$comment"
 
@@ -62,7 +59,7 @@ if [ ! -f "${APK_FILENAME}" ]; then
 fi
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=$( "${CURL}" -s ${SERVER_ENDPOINT}/api/upload -F api_key=${api_key} -F apk_file="@${APK_FILENAME}" -F icon-watermark="${ICON_WATERMARK}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( "${CURL}" -s ${SERVER_ENDPOINT}/api/upload -F api_key=${api_key} -F apk_file="@${APK_FILENAME}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -A "TestFairy Bitrise Command Line Uploader ${UPLOADER_VERSION}" )
 
 MESSAGE=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"message"\s*:\s*"\([^"]*\)".*/\1/p' )
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
